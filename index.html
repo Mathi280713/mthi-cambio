@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a7c6c">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
+<style>html,body{margin:0;padding:0}</style></head><body>
+<title>Mthi Cambio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root {
+  --bg: #eceff0;
+  --surface: #ffffff;
+  --ink: #11181c;
+  --muted: #5a686e;
+  --line: #d3dadc;
+  --accent: #0a7c6c;
+  --accent-ink: #ffffff;
+  --accent-soft: #d6efea;
+  --danger: #b3261e;
+  --paper-bg: #ffffff;
+  --paper-ink: #151a1d;
+  --shadow: 0 10px 30px rgba(10, 30, 28, 0.16);
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-ui: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1113;
+    --surface: #151c1f;
+    --ink: #e7eeef;
+    --muted: #8c9ca2;
+    --line: #263135;
+    --accent: #4fd6bd;
+    --accent-ink: #03211c;
+    --accent-soft: #123b35;
+    --danger: #ff8a80;
+    --paper-bg: #151c1f;
+    --paper-ink: #e7eeef;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1113;
+  --surface: #151c1f;
+  --ink: #e7eeef;
+  --muted: #8c9ca2;
+  --line: #263135;
+  --accent: #4fd6bd;
+  --accent-ink: #03211c;
+  --accent-soft: #123b35;
+  --danger: #ff8a80;
+  --paper-bg: #151c1f;
+  --paper-ink: #e7eeef;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.45;
+  overflow: hidden;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+#app { position: relative; height: 100%; max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ibtn { flex: none; display: grid; place-items: center; width: 46px; height: 46px; padding: 0; background: transparent; border: 0; border-radius: 12px; color: var(--ink); }
+.ibtn:hover { background: var(--accent-soft); }
+.ibtn svg, .tbtn svg, .opt svg { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.btn { min-height: 46px; padding: 0 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; font-weight: 600; font-size: 15px; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.danger { color: var(--danger); border-color: var(--danger); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.home { display: flex; flex-direction: column; height: 100%; }
+.home-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 14px; }
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: -0.01em; }
+.brand span { color: var(--accent); }
+.homeq { margin: 12px 0 8px; min-height: 48px; width: 100%; padding: 0 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; font-size: 16px; }
+.note { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+.list { flex: 1; min-height: 0; overflow-y: auto; display: grid; align-content: start; gap: 10px; padding: 4px 0 110px; }
+.empty { padding: 36px 8px; text-align: center; color: var(--muted); display: grid; gap: 8px; justify-items: center; }
+.empty h2 { margin: 0; font-family: var(--font-display); font-size: 26px; color: var(--ink); }
+.empty p { margin: 0; max-width: 34ch; }
+.fab { position: absolute; right: 0; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 8px; height: 58px; padding: 0 22px 0 18px; border: 0; border-radius: 18px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 16px; box-shadow: var(--shadow); }
+.fab svg { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.ed { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.ed-top { order: -2; display: flex; align-items: center; gap: 4px; flex: none; min-height: 56px; }
+.ed-title { flex: 1; min-width: 0; display: grid; }
+.ed-title input { min-width: 0; width: 100%; padding: 2px 4px; background: transparent; border: 0; border-radius: 6px; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.2; }
+.ed-title input::placeholder { color: var(--muted); }
+.ed-title small { padding: 0 4px; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ed-title small.err { color: var(--danger); }
+.backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, 0.45); }
+.sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; max-width: 860px; max-height: 84%; margin: 0 auto; overflow-y: auto; padding: 8px max(16px, env(safe-area-inset-left, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--surface); border-radius: 22px 22px 0 0; box-shadow: var(--shadow); animation: up 0.22s ease-out; }
+@keyframes up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sheet .grab { width: 44px; height: 5px; margin: 4px auto 10px; border-radius: 3px; background: var(--line); }
+.sheet h2 { margin: 0 0 12px; font-family: var(--font-display); font-weight: 800; font-size: 22px; }
+.sheet h3 { margin: 16px 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.sheet p { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.opt { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 12px; text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; font-size: 15px; font-weight: 500; }
+.opt:hover { border-color: var(--accent); }
+.opt[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.opt svg { color: var(--accent); flex: none; }
+.opt.danger { color: var(--danger); }
+.opt.danger svg { color: var(--danger); }
+.field { display: grid; gap: 6px; margin-bottom: 12px; font-size: 13px; font-weight: 600; color: var(--muted); }
+.field input, .field textarea { width: 100%; min-width: 0; min-height: 48px; padding: 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; font-size: 16px; font-weight: 400; color: var(--ink); }
+.field textarea { min-height: 120px; resize: vertical; }
+.rowbtn { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.stat { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.stat span:last-child { font-weight: 600; font-variant-numeric: tabular-nums; }
+.result { white-space: pre-wrap; padding: 12px; margin: 8px 0; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; max-height: 34vh; overflow-y: auto; color: var(--ink); font-size: 15px; }
+.toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 70; transform: translateX(-50%); max-width: calc(100% - 32px); padding: 11px 18px; background: var(--ink); color: var(--bg); border-radius: 14px; font-size: 14px; font-weight: 500; box-shadow: var(--shadow); animation: up 0.2s ease-out; }
+[hidden] { display: none !important; }
+input, textarea, select { box-sizing: border-box; max-width: 100%; }
+.field { min-width: 0; }
+.filewrap { position: relative; display: inline-flex; }
+.ovl { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; font-size: 0; cursor: pointer; z-index: 2; }
+.opt.filewrap { position: relative; }
+*, *::before, *::after { box-sizing: border-box; }
+.top { flex: none; display: flex; align-items: center; justify-content: space-between; padding: 14px 0 6px; }
+.top svg, .ibtn svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.content { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 0 40px; }
+.card { padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); }
+.lab { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.amt { width: 100%; margin: 4px 0 8px; padding: 0; background: transparent; border: 0; font-size: 40px; font-weight: 700; outline: none; font-variant-numeric: tabular-nums; }
+.cur { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 52px; padding: 0 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; font-size: 16px; font-weight: 600; text-align: left; }
+.cur small { color: var(--muted); font-weight: 500; }
+.cur b { font-size: 18px; margin-right: 8px; }
+.swaprow { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+.swaprow .line { flex: 1; height: 1px; background: var(--line); }
+.sw { background: var(--accent-soft); color: var(--accent); border-radius: 50%; }
+.res { display: block; width: 100%; margin: 4px 0 8px; padding: 0; background: transparent; border: 0; text-align: left; font-size: 40px; font-weight: 800; color: var(--accent); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.rate { margin: 10px 2px 0; font-size: 13px; color: var(--muted); }
+.h3 { margin: 18px 0 8px; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.orow { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 58px; padding: 6px 8px 6px 14px; margin-bottom: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; text-align: left; }
+.orow .code { font-weight: 800; width: 48px; }
+.orow .nm { flex: 1; min-width: 0; color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.orow .val { font-weight: 700; font-size: 17px; font-variant-numeric: tabular-nums; }
+.marg { display: grid; gap: 6px; margin: 18px 2px 6px; font-size: 14px; color: var(--muted); }
+.range { width: 100%; accent-color: var(--accent); }
+.note { font-size: 12px; color: var(--muted); }
+.pick-in { width: 100%; min-height: 48px; padding: 0 14px; margin: 4px 0 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 14px; font-size: 16px; }
+.plist { display: grid; gap: 2px; }
+.pitem { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 10px; background: transparent; border: 0; border-radius: 12px; text-align: left; width: 100%; }
+.pitem:hover { background: var(--accent-soft); }
+.pitem b { width: 48px; }
+.pitem span { flex: 1; color: var(--muted); font-size: 14px; }
+.pstar { font-size: 22px; color: var(--accent); padding: 0 8px; background: transparent; border: 0; min-height: 44px; }
+
+</style>
+<div id="app">
+  <header class="top"><h1 class="brand">Mthi <span>Cambio</span></h1>
+    <button class="ibtn" id="refBtn" type="button" data-i="refresh" aria-label="Actualizar tasas"></button></header>
+  <main class="content" id="content">
+    <section class="card" aria-label="Convertidor">
+      <label class="lab" for="amt">Monto</label>
+      <input id="amt" class="amt" type="text" inputmode="decimal" autocomplete="off" aria-label="Monto a convertir" value="1">
+      <button class="cur" id="fromBtn" type="button" aria-label="Moneda de origen"></button>
+      <div class="swaprow"><span class="line"></span><button class="ibtn sw" id="swapBtn" type="button" data-i="swap" aria-label="Invertir monedas"></button><span class="line"></span></div>
+      <div class="lab">Resultado</div>
+      <button class="res" id="res" type="button" aria-label="Copiar resultado"></button>
+      <button class="cur" id="toBtn" type="button" aria-label="Moneda de destino"></button>
+      <p class="rate" id="rate"></p>
+    </section>
+    <div class="h3" id="otherH">Otras monedas</div>
+    <div id="others"></div>
+    <label class="marg"><span>Margen de la casa de cambio: <b id="mv">0%</b></span><input id="margin" class="range" type="range" min="0" max="8" step="0.5" value="0" aria-label="Margen de la casa de cambio"></label>
+    <p class="note" id="stamp"></p>
+  </main>
+  <div id="layer"></div>
+</div>
+
+<script>
+/* ===== Utilidades ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const lsGet = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } };
+const debounce = (fn, ms) => { let t; const f = (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; f.flush = () => { clearTimeout(t); fn(); }; f.cancel = () => clearTimeout(t); return f; };
+const plural = (n, a, b) => n + ' ' + (n === 1 ? a : b);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+const mkCanvas = (w, h) => { const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h)); return c; };
+const toBlob = (c, type, q) => new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('No se pudo crear la imagen.'))), type, q));
+const nextFrame = () => new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
+function fmtSize(n) { return n < 1024 ? n + ' B' : n < 1048576 ? Math.round(n / 1024) + ' KB' : (n / 1048576).toFixed(1) + ' MB'; }
+function timeAgo(ms) {
+  const d = Date.now() - ms;
+  if (d < 45000) return 'ahora';
+  if (d < 3600000) return 'hace ' + Math.max(1, Math.round(d / 60000)) + ' min';
+  if (d < 86400000) return 'hace ' + Math.round(d / 3600000) + ' h';
+  if (d < 172800000) return 'ayer';
+  try { return new Date(ms).toLocaleDateString('es-CR', { day: 'numeric', month: 'short' }); } catch (e) { return ''; }
+}
+function toast(msg, ms = 2800) {
+  $$('.toast').forEach((t) => t.remove());
+  const t = el('div', 'toast', msg); t.setAttribute('role', 'status'); $('#layer').appendChild(t); setTimeout(() => t.remove(), ms);
+}
+const ICONS = {
+  back: 'M15 5l-7 7 7 7', camera: 'M4 8h3l2-3h6l2 3h3v11H4zM12 11.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z',
+  image: 'M4 5h16v14H4zM9 10a1.6 1.6 0 100-3.2A1.6 1.6 0 009 10zM4 17l5-5 4 4 3-3 4 4',
+  trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13', share: 'M12 15V3M7 8l5-5 5 5M5 13v8h14v-8',
+  download: 'M12 4v11M7 11l5 5 5-5M5 20h14', file: 'M7 3h7l5 5v13H7zM14 3v5h5', plus: 'M12 5v14M5 12h14',
+  left: 'M15 5l-7 7 7 7', right: 'M9 5l7 7-7 7', copy: 'M9 9h11v11H9zM5 15V5h10', pen: 'M4 20l4-1L19 8l-3-3L5 16zM14 7l3 3',
+  dots: 'M12 5h.01M12 12h.01M12 19h.01', check: 'M5 12l5 5 9-10', search: 'M11 4a7 7 0 100 14 7 7 0 000-14zM20 20l-4-4', star: 'M12 3l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 2.8 1.1-6.1L3.2 9.4l6.1-.8z', speaker: 'M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11', clock: 'M12 4a8 8 0 100 16 8 8 0 000-16zM12 8v4l3 2', shuffle: 'M4 7h4l8 10h4M4 17h4l2-2.5M14 9.5L16 7h4M18 5l2 2-2 2M18 15l2 2-2 2', swap: 'M7 4L3 8l4 4M3 8h14M17 20l4-4-4-4M21 16H7', refresh: 'M20 5v5h-5M4 19v-5h5M5.5 9A7 7 0 0118 7.5L20 10M18.5 15A7 7 0 016 16.5L4 14', lock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 017 0v3', unlock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 016.7-1.4', eye: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z', eyeoff: 'M3 3l18 18M10 6.2A9.5 9.5 0 0112 5c6 0 10 7 10 7a17 17 0 01-3 3.7M6.3 7.6A17 17 0 002 12s4 7 10 7a9.6 9.6 0 004-.9', key: 'M14 10a4 4 0 11-1.2-2.8L21 15v3h-3v-2h-2v-2h-2.5zM8 8.5h.01', card: 'M3 6h18v12H3zM3 10h18M6 15h4', wifi: 'M2 9a15 15 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0M12 19.5h.01', note: 'M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h7', barcode: 'M4 5v14M7 5v14M11 5v14M14 5v14M17 5v14M20 5v14', gear: 'M12 9a3 3 0 100 6 3 3 0 000-6zM19 12l2-1.5-2-3.5-2.3.8-2-1.1L14 4h-4l-.7 2.7-2 1.1L5 7 3 10.5 5 12l-.1 1.2L3 14.5 5 18l2.3-.8 2 1.1L10 21h4l.7-2.7 2-1.1 2.3.8 2-3.5-2-1.5z', finger: 'M12 3a7 7 0 00-7 7M12 3a7 7 0 017 7v2M8 21c-1-2-1-4-1-6a5 5 0 0110 0c0 2 0 4 1 6M12 12v4c0 2 .5 3.5 1 5M9.5 17c.2 1.5.5 2.5 1 4', dice: 'M5 4h14v16H5zM9 8h.01M15 8h.01M12 12h.01M9 16h.01M15 16h.01', play: 'M7 4l13 8-13 8z', pause: 'M7 4h4v16H7zM13 4h4v16h-4z', next: 'M6 5l10 7-10 7zM18 5v14', prev: 'M18 5L8 12l10 7zM6 5v14', repeat: 'M4 11V9a3 3 0 013-3h12l-3-3M20 13v2a3 3 0 01-3 3H5l3 3', music: 'M9 18V5l11-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zM20 16a3 3 0 11-6 0 3 3 0 016 0z', radio: 'M4 9h16v11H4zM8 9l9-5M8 14.5a2 2 0 100 .01M13 13h5M13 16h5', globe: 'M12 3a9 9 0 100 18 9 9 0 000-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18', moon: 'M20 14A8 8 0 019.5 4 8 8 0 1020 14z', list: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01', down: 'M6 9l6 6 6-6', sun: 'M12 8a4 4 0 100 8 4 4 0 000-8zM12 2v2M12 20v2M2 12h2M20 12h2'
+};
+function icon(n, s = 24) { return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" aria-hidden="true"><path d="' + (ICONS[n] || '') + '"/></svg>'; }
+function paintIcons(r = document) { $$('[data-i]', r).forEach((e) => { if (!e.firstChild) e.innerHTML = icon(e.dataset.i); }); }
+
+/* hojas desde abajo */
+let sheetClose = null;
+function openSheet(title, build) {
+  if (sheetClose) sheetClose();
+  const bd = el('div', 'backdrop'), sh = el('div', 'sheet');
+  sh.setAttribute('role', 'dialog'); sh.setAttribute('aria-modal', 'true'); sh.setAttribute('aria-label', title);
+  sh.appendChild(el('div', 'grab')); sh.appendChild(el('h2', '', title));
+  const close = () => { bd.remove(); sh.remove(); if (sheetClose === close) sheetClose = null; if (sh._onClose) sh._onClose(); };
+  sheetClose = close; bd.addEventListener('click', close);
+  build(sh, close); $('#layer').append(bd, sh);
+  return close;
+}
+function optBtn(ic, label, fn, o) {
+  o = o || {};
+  const b = el('button', 'opt' + (o.danger ? ' danger' : '')); b.type = 'button';
+  b.innerHTML = icon(ic, 22) + '<span>' + esc(label) + '</span>';
+  if (o.pressed != null) b.setAttribute('aria-pressed', o.pressed ? 'true' : 'false');
+  b.addEventListener('click', fn); return b;
+}
+const grid = (sh) => { const g = el('div', 'grid'); sh.appendChild(g); return g; };
+const note = (sh, t) => { const p = el('p', '', t); p.style.color = 'var(--muted)'; p.style.margin = '0 0 10px'; sh.appendChild(p); return p; };
+
+/* ===== Almacenamiento (IndexedDB; si no hay, memoria) ===== */
+const DB = {
+  db: null, mem: { scans: new Map(), blobs: new Map() },
+  async open() {
+    try {
+      this.db = await new Promise((res, rej) => {
+        const r = indexedDB.open('mthi-escaner', 1);
+        r.onupgradeneeded = () => { r.result.createObjectStore('scans', { keyPath: 'id' }); r.result.createObjectStore('blobs'); };
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); r.onblocked = () => rej(new Error('blocked'));
+      });
+      try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { /* ok */ }
+    } catch (e) { this.db = null; }
+    return !!this.db;
+  },
+  rq(r) { return new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); }); },
+  tx(stores, fn) {
+    return new Promise((res, rej) => {
+      const t = this.db.transaction(stores, 'readwrite'); let out;
+      t.oncomplete = () => res(out); t.onabort = t.onerror = () => rej(t.error && t.error.name === 'QuotaExceededError' ? new Error('No hay espacio en este dispositivo.') : (t.error || new Error('No se pudo guardar.')));
+      out = fn(t);
+    });
+  },
+  async all() { return this.db ? this.rq(this.db.transaction('scans').objectStore('scans').getAll()) : Array.from(this.mem.scans.values()); },
+  async put(scan) { if (!this.db) { this.mem.scans.set(scan.id, JSON.parse(JSON.stringify(scan))); return; } await this.tx('scans', (t) => { t.objectStore('scans').put(scan); }); },
+  async putBlob(k, b) { if (!this.db) { this.mem.blobs.set(k, b); return; } await this.tx('blobs', (t) => { t.objectStore('blobs').put(b, k); }); },
+  async getBlob(k) { return this.db ? (await this.rq(this.db.transaction('blobs').objectStore('blobs').get(k))) || null : this.mem.blobs.get(k) || null; },
+  async delBlob(k) { if (!this.db) { this.mem.blobs.delete(k); return; } await this.tx('blobs', (t) => { t.objectStore('blobs').delete(k); }); },
+  async del(id) {
+    if (!this.db) { this.mem.scans.delete(id); Array.from(this.mem.blobs.keys()).filter((k) => k.indexOf(id + '/') === 0).forEach((k) => this.mem.blobs.delete(k)); return; }
+    const keys = (await this.rq(this.db.transaction('blobs').objectStore('blobs').getAllKeys())).filter((k) => String(k).indexOf(id + '/') === 0);
+    await this.tx(['scans', 'blobs'], (t) => { t.objectStore('scans').delete(id); keys.forEach((k) => t.objectStore('blobs').delete(k)); });
+  }
+};
+
+/* Guardar / compartir archivos */
+async function saveFile(name, blob) {
+  const claude = window.claude;
+  if (claude && claude.use) {
+    let dl = null; try { dl = await claude.use('downloads'); } catch (e) { dl = null; }
+    if (dl) { try { await dl.save({ filename: name, data: blob }); return 'saved'; } catch (e) { if (e && e.code === 'declined') return 'declined'; } }
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000); return 'saved';
+}
+async function shareFiles(files) {
+  try {
+    if (navigator.canShare && navigator.canShare({ files })) { await navigator.share({ files }); return 'shared'; }
+  } catch (e) { if (e && e.name === 'AbortError') return 'declined'; }
+  return 'unsupported';
+}
+const canShareFiles = (files) => { try { return !!(navigator.canShare && navigator.canShare({ files })); } catch (e) { return false; } };
+
+/* ===== Mthi Cambio ===== */
+const jget = (k, d) => { try { return JSON.parse(lsGet(k)) || d; } catch (e) { return d; } };
+const FALLBACK = { CRC: 515, USD: 1, EUR: 0.92, MXN: 18.5, GBP: 0.79, CAD: 1.37, COP: 4100, PAB: 1, NIO: 36.8, GTQ: 7.7, HNL: 24.7, JPY: 150, CNY: 7.2, BRL: 5.5, ARS: 1000, CLP: 950, PEN: 3.75 };
+const S = Object.assign({ from: 'USD', to: 'CRC', amt: '1', favs: ['USD', 'EUR', 'MXN', 'GBP', 'CAD', 'COP'], margin: 0 }, jget('mthi-cambio', {}));
+let R = jget('mthi-cambio-rates', null); /* {t, r:{CODE:valor por 1 USD}} */
+let names = null; try { names = new Intl.DisplayNames(['es'], { type: 'currency' }); } catch (e) {}
+const nameOf = (c) => { try { return (names && names.of(c)) || c; } catch (e) { return c; } };
+const codesOK = (() => { try { return new Set(Intl.supportedValuesOf('currency')); } catch (e) { return null; } })();
+const save = () => lsSet('mthi-cambio', JSON.stringify(S));
+const rates = () => (R && R.r) || FALLBACK;
+const SYM = { USD: '$', EUR: '€', CRC: '₡', GBP: '£', JPY: '¥', MXN: '$', COP: '$', CAD: '$' };
+
+/* red: dos fuentes, con respaldo */
+async function jfetch(u, ms = 10000) { const ac = new AbortController(), t = setTimeout(() => ac.abort(), ms); try { const r = await fetch(u, { signal: ac.signal }); if (!r.ok) throw new Error('http'); return await r.json(); } finally { clearTimeout(t); } }
+async function loadRates(force) {
+  if (!force && R && Date.now() - R.t < 6 * 3600e3) return true;
+  const set = (r, src) => { R = { t: Date.now(), r, src }; lsSet('mthi-cambio-rates', JSON.stringify(R)); return true; };
+  try { const j = await jfetch('https://open.er-api.com/v6/latest/USD'); if (j && j.rates && j.rates.CRC) return set(j.rates, 'er-api'); } catch (e) {}
+  try { const j = await jfetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json'); const o = {}; Object.keys(j.usd || {}).forEach((k) => { const K = k.toUpperCase(); if (!codesOK || codesOK.has(K)) o[K] = j.usd[k]; }); if (o.CRC) return set(o, 'fawaz'); } catch (e) {}
+  return false;
+}
+const conv = (v, a, b, withMargin) => { const r = rates(); if (!r[a] || !r[b]) return NaN; let x = v / r[a] * r[b]; if (withMargin && S.margin) x *= 1 - S.margin / 100; return x; };
+
+/* monto: acepta expresiones simples 2500+1300, 3*4500 */
+function evalAmt(s) {
+  s = String(s).replace(/,/g, '.').replace(/\s+/g, '').replace(/[x×]/gi, '*').replace(/÷/g, '/');
+  if (/^[\d.]+$/.test(s)) return parseFloat(s);
+  if (!/^[\d.+\-*/()]+$/.test(s)) return NaN;
+  try { const v = Function('"use strict";return (' + s + ')')(); return isFinite(v) ? v : NaN; } catch (e) { return NaN; }
+}
+function fmt(v, c) {
+  if (!isFinite(v)) return '—';
+  const big = Math.abs(v) >= 1000, d = Math.abs(v) >= 1 ? 2 : 4;
+  try { return v.toLocaleString('es-CR', { minimumFractionDigits: big ? 0 : 2, maximumFractionDigits: big ? 2 : d }); } catch (e) { return v.toFixed(2); }
+}
+const sym = (c) => SYM[c] || '';
+
+function paint() {
+  const v = evalAmt($('#amt').value), res = conv(v, S.from, S.to, true);
+  $('#fromBtn').innerHTML = '<span><b>' + S.from + '</b><small>' + esc(nameOf(S.from)) + '</small></span>' + icon('right', 18);
+  $('#toBtn').innerHTML = '<span><b>' + S.to + '</b><small>' + esc(nameOf(S.to)) + '</small></span>' + icon('right', 18);
+  $('#res').textContent = isFinite(res) ? sym(S.to) + fmt(res, S.to) : '—';
+  const one = conv(1, S.from, S.to, true);
+  $('#rate').textContent = '1 ' + S.from + ' = ' + fmt(one, S.to) + ' ' + S.to + (S.margin ? ' (con margen de ' + S.margin + '%)' : '');
+  $('#mv').textContent = S.margin + '%';
+  const box = $('#others'); box.textContent = '';
+  const list = S.favs.filter((c) => c !== S.from);
+  list.forEach((c) => {
+    const b = el('button', 'orow'); b.type = 'button'; b.innerHTML = '<span class="code">' + c + '</span><span class="nm">' + esc(nameOf(c)) + '</span><span class="val">' + esc(sym(c) + fmt(conv(v, S.from, c, true), c)) + '</span>';
+    b.addEventListener('click', () => { S.to = c; save(); paint(); }); box.appendChild(b);
+  });
+  const add = el('button', 'btn', '+ Agregar moneda'); add.type = 'button'; add.style.width = '100%'; add.addEventListener('click', () => pick('Agregar moneda', null, true)); box.appendChild(add);
+  $('#otherH').textContent = 'Tu ' + (isFinite(v) ? fmt(v, S.from) : '') + ' ' + S.from + ' en…';
+  const stamp = $('#stamp');
+  if (!R) stamp.textContent = 'Sin conexión: usando tasas aproximadas. Toca ↻ cuando tengas internet.';
+  else stamp.textContent = 'Tasas de referencia del mercado, actualizadas ' + timeAgo(R.t) + (navigator.onLine ? '' : ' (sin conexión)') + '. Los bancos y casas de cambio aplican su propio margen: ajústalo arriba.';
+  save();
+}
+
+function pick(title, onSel, manageFavs) {
+  openSheet(title, (sh, close) => {
+    const q = el('input', 'pick-in'); q.type = 'search'; q.placeholder = 'Buscar moneda o país…'; q.setAttribute('aria-label', 'Buscar moneda'); sh.appendChild(q);
+    const list = el('div', 'plist'); sh.appendChild(list);
+    const draw = () => {
+      list.textContent = ''; const t = q.value.trim().toLowerCase();
+      const all = Object.keys(rates()).filter((c) => /^[A-Z]{3}$/.test(c)).sort((a, b) => (S.favs.includes(b) ? 1 : 0) - (S.favs.includes(a) ? 1 : 0) || a.localeCompare(b));
+      all.filter((c) => !t || c.toLowerCase().includes(t) || nameOf(c).toLowerCase().includes(t)).slice(0, 80).forEach((c) => {
+        const w = el('div'); w.style.cssText = 'display:flex;align-items:center';
+        const b = el('button', 'pitem'); b.type = 'button'; b.innerHTML = '<b>' + c + '</b><span>' + esc(nameOf(c)) + '</span>';
+        b.addEventListener('click', () => { if (manageFavs) { if (!S.favs.includes(c)) S.favs.push(c); } else onSel(c); save(); paint(); close(); });
+        const st = el('button', 'pstar', S.favs.includes(c) ? '★' : '☆'); st.type = 'button'; st.setAttribute('aria-label', 'Favorita ' + c);
+        st.addEventListener('click', () => { S.favs = S.favs.includes(c) ? S.favs.filter((x) => x !== c) : S.favs.concat(c); st.textContent = S.favs.includes(c) ? '★' : '☆'; save(); paint(); });
+        w.append(b, st); w.firstChild.style.flex = '1'; list.appendChild(w);
+      });
+    };
+    q.addEventListener('input', draw); draw(); note(sh, '★ = aparece en tu lista de “otras monedas”.');
+  });
+}
+
+async function refresh(force) {
+  const b = $('#refBtn'); b.style.opacity = 0.5; const ok = await loadRates(force); b.style.opacity = 1;
+  if (!ok && force) toast(R ? 'Sin conexión: uso las últimas tasas guardadas' : 'No pude conseguir las tasas. Revisa tu internet.', 3000); else if (ok && force) toast('Tasas actualizadas', 1600);
+  paint();
+}
+function init() {
+  paintIcons();
+  $('#amt').value = S.amt; $('#margin').value = S.margin;
+  $('#amt').addEventListener('input', () => { S.amt = $('#amt').value; paint(); });
+  $('#amt').addEventListener('focus', (e) => e.target.select());
+  $('#fromBtn').addEventListener('click', () => pick('Moneda de origen', (c) => { S.from = c; }));
+  $('#toBtn').addEventListener('click', () => pick('Moneda de destino', (c) => { S.to = c; }));
+  $('#swapBtn').addEventListener('click', () => { const r = conv(evalAmt($('#amt').value), S.from, S.to, true); [S.from, S.to] = [S.to, S.from]; if (isFinite(r)) { $('#amt').value = String(Math.round(r * 100) / 100); S.amt = $('#amt').value; } paint(); });
+  $('#res').addEventListener('click', () => { const t = $('#res').textContent; if (navigator.clipboard && t !== '—') navigator.clipboard.writeText(t.replace(/[^\d.,]/g, '')).then(() => toast('Resultado copiado', 1500), () => {}); });
+  $('#margin').addEventListener('input', () => { S.margin = +$('#margin').value; paint(); });
+  $('#refBtn').addEventListener('click', () => refresh(true));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheetClose) sheetClose(); });
+  window.addEventListener('online', () => refresh(false));
+  paint(); refresh(false);
+}
+init();
+
+</script>
+
+<script>if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
+</body></html>
